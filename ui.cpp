@@ -1,11 +1,15 @@
 #include <iostream>
 #include "arrayIO.h"
-#include <vector>
+#include "LinkedList.h"
 #include <string>
+#include <chrono>
+#include <cstdlib>
 #include "binarytree.hpp"
 
+using namespace std;
+
 template <class T> void actions() {
-    std::vector<BinaryTree<T> > v;
+    LinkedList<BinaryTree<T> > v;
     int tempCode = 1, len, p1, p2, optionType, optionType2;
     while (tempCode) {
         try {
@@ -15,7 +19,7 @@ template <class T> void actions() {
                 case 0:
                     std::cout << "length: ";
                     checkInput(&len);
-                    v.push_back(inputBT<T>(len));
+                    v.Append(inputBT<T>(len));
                     break;
                 case 4:
                     try {
@@ -23,7 +27,7 @@ template <class T> void actions() {
                         checkInput(&p1);
                         std::cout << "Input subtree index: ";
                         checkInput(&p2);
-                        if (v.at(p1).findSubtree(v.at(p2)))
+                        if (v[p1].findSubtree(v[p2]))
                             std::cout << "found" << '\n';
                         else
                             std::cout << "not found" << '\n';
@@ -40,42 +44,42 @@ template <class T> void actions() {
                     switch (optionType2) {
                         case 0:
                             try {
-                                print(v.at(p1).straightLeft());
+                                print(v[p1].straightLeft());
                             } catch (const std::exception &e) {
                                 std::cout << e.what() << '\n';
                             }
                             break;
                         case 1:
                             try {
-                                print(v.at(p1).straightRight());
+                                print(v[p1].straightRight());
                             } catch (const std::exception &e) {
                                 std::cout << e.what() << '\n';
                             }
                             break;
                         case 2:
                             try {
-                                print(v.at(p1).reverseLeft());
+                                print(v[p1].reverseLeft());
                             } catch (const std::exception &e) {
                                 std::cout << e.what() << '\n';
                             }
                             break;
                         case 3:
                             try {
-                                print(v.at(p1).central());
+                                print(v[p1].central());
                             } catch (const std::exception &e) {
                                 std::cout << e.what() << '\n';
                             }
                             break;
                         case 4:
                             try {
-                                print(v.at(p1).reverseRight());
+                                print(v[p1].reverseRight());
                             } catch (const std::exception &e) {
                                 std::cout << e.what() << '\n';
                             }
                             break;
                         case 5:
                             try {
-                                print(v.at(p1).centralRight());
+                                print(v[p1].centralRight());
                             } catch (const std::exception &e) {
                                 std::cout << e.what() << '\n';
                             }
@@ -89,7 +93,7 @@ template <class T> void actions() {
                         T vall;
                         std::cout << "Input value: ";
                         checkInput(&vall);
-                        if (v.at(p1).find(vall))
+                        if (v[p1].find(vall))
                             std::cout << "found" << '\n';
                         else
                             std::cout << "not found" << '\n';
@@ -105,7 +109,7 @@ template <class T> void actions() {
                         T vall;
                         std::cout << "Input value: ";
                         checkInput(&vall);
-                        v.at(p1).insert(vall);
+                        v[p1].insert(vall);
                     }
                     catch (const std::exception &e) {
                         std::cout << e.what() << '\n';
@@ -118,7 +122,7 @@ template <class T> void actions() {
                         T vall;
                         std::cout << "Input value: ";
                         checkInput(&vall);
-                        v.push_back(v.at(p1).subtree(vall));
+                        v.Append(v[p1].subtree(vall));
                     }
                     catch (const std::exception &e) {
                         std::cout << e.what() << '\n';
@@ -128,7 +132,7 @@ template <class T> void actions() {
                     try{
                         std::cout << "Input tree index: ";
                         checkInput(&p1);
-                        v.at(p1).print();
+                        v[p1].print();
                     }
                     catch (const std::exception &e) {
                         std::cout << e.what() << '\n';
@@ -136,8 +140,8 @@ template <class T> void actions() {
                     break;
                 case 6:
                     try {
-                        for(auto it = v.begin() ; it != v.end(); ++it) {
-                            (*it).print();
+                        for(int i = 0; i < v.GetLength(); ++i) {
+                            v[i].print();
                         }
                     }
                     catch (const std::exception &e) {
@@ -151,7 +155,7 @@ template <class T> void actions() {
                         T vall;
                         std::cout << "Input value: ";
                         checkInput(&vall);
-                        v.at(p1).removeNode(vall);
+                        v[p1].removeNode(vall);
                     }
                     catch (const std::exception &e) {
                         std::cout << e.what() << '\n';
@@ -170,11 +174,37 @@ template <class T> void actions() {
 }
 
 
+
+void diagrams(int n) {
+    BinaryTree<int> tree;
+    LinkedList<int> list;
+    srand((unsigned) time(NULL));
+    for(int i = 0; i < n; i++) {
+        int random = (rand() % 1000001);
+        if (random % 3 == 0)
+            list.Prepend(random);
+        tree.insert(random);
+    }
+    auto start = std::chrono::high_resolution_clock::now();
+    int x;
+    int i = 0;
+    try {
+        while (i < 500) {
+            ++i;
+            int x = list.PopBack();
+            tree.find(x);
+        }
+    } catch(exception& e) {}
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    cout << "Time taken by find " << n << " nums : " << duration.count() << " microseconds" << endl;
+}
+
 int main(int argc, char const *argv[]) {
     int code = 1;
     try {
         int optionType, tempCode;
-        std::cout << "test type: 0 - int; 1 - double; 2 - string; 3 - exit" << '\n';
+        std::cout << "test type: 0 - int; 1 - double; 2 - string; 3 - exit; 4 - time diagram;" << '\n';
         checkInput(&optionType);
         switch (optionType) {
             case 0:
@@ -187,6 +217,11 @@ int main(int argc, char const *argv[]) {
                 actions<std::string>();
             break;
             case 3:
+            break;
+            case 4:
+                for (int i = 1000; i < 1050001; i *= 2) {
+                    diagrams(i);
+                }
             break;
         }
     }

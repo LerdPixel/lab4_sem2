@@ -70,6 +70,16 @@ public:
         }
         return tree;
     }
+    BinaryTree<T> where(bool (*func)(T)) {
+        BinaryTree<T> tree = copyTree();
+        LinkedList<T> list = straightLeft();
+        for (size_t i = 0; i < list.GetLength(); i++) {
+            if (!func(list[i])) {
+                tree.removeNode(list[i]);
+            }
+        }
+        return tree;
+    }
     BinaryTree<T> subtree(const T& value) {
         BinaryTree<T> tree;
         NodePtr node = find(value);
@@ -81,6 +91,11 @@ public:
     }
     bool equal(BinaryTree<T> &x2) {
         return equalImpl(_root, x2._root);
+    }
+    BinaryTree<T> copyTree() {
+        BinaryTree<T> x2;
+        copyImpl(x2._root, _root);
+        return x2;
     }
 private:
     void subtreeImpl(NodePtr& x1, NodePtr& x2) {
@@ -99,6 +114,16 @@ private:
         if (x1 == nullptr) return true;
         if (x1->value != x2->value) return false;
         return findSubtreeImpl(x1->left, x2->left) && findSubtreeImpl(x1->right, x2->right);
+    }
+    void copyImpl(NodePtr& x1, NodePtr& x2) {
+        x1 = NodePtr(new Node());
+        if (x2 == nullptr) {x1 = nullptr; return;}
+        else {
+            x1->value = x2->value;
+            if (x2->left.get()) copyImpl(x1->left, x2->left);
+            if (x2->right.get()) copyImpl(x1->right, x2->right);
+        }
+
     }
     bool equalImpl(NodePtr& x1, NodePtr& x2) {
         if (x1 == nullptr && x2 == nullptr) return true;

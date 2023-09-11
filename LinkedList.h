@@ -200,7 +200,7 @@ void LinkedList<T> :: Prepend(T item) {
 template <typename T>
 T LinkedList<T> :: PopBack() {
     if (header == nullptr)
-        return std::out_of_range("list is empty");
+        throw std::out_of_range("list is empty");
     T res = header->GetValue();
     Node<T>* t = header;
     header = header->GetNext();

@@ -146,4 +146,61 @@ TEST_F(BinaryTreeTests, Tests_map_2) {
     BinaryTree<int> gh = a213.map(&f2);
     ASSERT_TRUE(gh.equal(gh1));
 }
+TEST_F(BinaryTreeTests, Tests_trevers_central) {
+    int t [] {1, 3, 4, 6, 8};
+    LinkedList<int> gh1 = bb.central();
+    ASSERT_TRUE(gh1 == LinkedList(t , 5));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_centralRight) {
+    int t [] {8, 6, 4, 3, 1};
+    LinkedList<int> gh1 = bb.centralRight();
+    ASSERT_TRUE(gh1 == LinkedList(t , 5));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_straightLeft) {
+    int t [] {3, 1, 6, 4, 8};
+    LinkedList<int> gh1 = bb.straightLeft();
+    ASSERT_TRUE(gh1 == LinkedList(t , 5));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_straightRight) {
+    int t [] {3, 6, 8, 4, 1};
+    LinkedList<int> gh1 = bb.straightRight();
+    ASSERT_TRUE(gh1 == LinkedList(t , 5));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_reverseRight) {
+    int t [] {8, 4, 6, 1, 3};
+    LinkedList<int> gh1 = bb.reverseRight();
+    ASSERT_TRUE(gh1 == LinkedList(t , 5));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_reverseLeft) {
+    int t [] {1, 4, 8, 6, 3};
+    LinkedList<int> gh1 = bb.reverseLeft();
+    ASSERT_TRUE(gh1 == LinkedList(t , 5));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_copyTree) {
+    BinaryTree<int> gh = bb.copyTree();
+    ASSERT_TRUE(gh.equal(bb));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_copyTree_1) {
+    BinaryTree<int> gh = oo.copyTree();
+    ASSERT_TRUE(gh.equal(oo));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_copyTree_2) {
+    BinaryTree<int> gh = ab.copyTree();
+    ASSERT_TRUE(gh.equal(ab2));
+}
+bool f3(int x) {
+    return (x % 2 == 0);
+}
+TEST_F(BinaryTreeTests, Tests_trevers_where_1) {
+    int b[] {4,6,8};
+    BinaryTree<int> gh = BinaryTree(LinkedList(b, 3));
+    BinaryTree<int> gh2 = bb.where(&f3);
+    ASSERT_TRUE(gh.equal(gh2));
+}
+TEST_F(BinaryTreeTests, Tests_trevers_where_2) {
+    int b[] {4,6,8};
+    BinaryTree<int> gh = BinaryTree(LinkedList(b, 3));
+    BinaryTree<int> gh2 = bb.where(&f3);
+    ASSERT_TRUE(gh.equal(gh2));
+}
 #endif
